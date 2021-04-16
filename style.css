@@ -36,7 +36,7 @@ body{
     position: absolute;
 }
 .player{
-    background: url('/img/subject.png') no-repeat;
+    background: url('https://poojajethva.github.io/bubblebash/img/subject.png') no-repeat;
     background-size: cover;
     width: 178px;
     height: 160px;
@@ -70,7 +70,7 @@ body{
 }
 
 .obstacle{
-    background: url('/img/bubble.png') no-repeat;
+    background: url('https://poojajethva.github.io/bubblebash/img/bubble.png') no-repeat;
     background-size: cover;
     border-radius: 50%;
     right: -10px;
