@@ -1,0 +1,108 @@
+*{box-sizing: border-box;margin: 0;padding: 0;}
+
+body{
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 1.2;
+}
+.mainWrapper{
+    width: 100%;
+    height: 100vh;
+    /* background-color: #2884b8; */
+    /* background-image: linear-gradient(315deg, #2884b8 0%, #d1bad2 74%); */
+    overflow: hidden;
+    background-color: #29539b;
+    background-image: linear-gradient(315deg, #29539b 0%, #1e3b70 74%);
+}
+.title{
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff; 
+    padding: 20px;
+    text-align: center;  
+    text-shadow: 1px 1px 1px #000;
+}
+.title span{
+    font-style: italic;
+    letter-spacing: -3px;
+}
+.gameZone{
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 70px);
+}
+
+.posAbso{
+    position: absolute;
+}
+.player{
+    background: url('/img/subject.png') no-repeat;
+    background-size: cover;
+    width: 178px;
+    height: 160px;
+    left: 100px;
+    top: 30%;
+    animation: littleMovement 1s ease infinite;
+}
+
+@keyframes littleMovement {
+    0%{
+        margin: 0;
+    }
+    50%{
+        margin: -2px;
+    }
+    100%{
+        margin: 0;
+    }
+}
+
+@keyframes biggerMovement {
+    0%{
+        margin-top: 0;
+    }
+    25%{
+        margin-top: -20px;
+    }
+    100%{
+        margin-top: 0;
+    }
+}
+
+.obstacle{
+    background: url('/img/bubble.png') no-repeat;
+    background-size: cover;
+    border-radius: 50%;
+    right: -10px;
+    animation: rightToLeft 10s linear infinite, biggerMovement 1s linear infinite;
+}
+
+@keyframes rightToLeft {
+    0%{
+        right: -10px;
+    }
+    100%{
+        right: 110%;
+    }
+}
+
+.gameOver{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(255,255,255,0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    display: none;
+}
+
+.gmTitle{
+    font-size: 24px;
+    text-transform: uppercase;
+    color: black;
+    font-weight: bold;
+}
