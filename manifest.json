@@ -5,7 +5,7 @@
     "display": "standalone",
     "background_color": "#eee",
     "theme_color": "#000",
-    "orientation": "portrait-primary",
+    "orientation": "landscape-primary",
     "icons": [
         {
           "src": "https://poojajethva.github.io/bubblebash/img/icons/icon-72-72.png",
