@@ -180,7 +180,7 @@ body{
     padding: 10px;
 }
 
-@media screen and (max-width: 850px){
+@media screen and (max-width: 900px){
     .player{
         width: 122px;
         height: 110px;
