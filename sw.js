@@ -1,12 +1,12 @@
-const staticCache = "static-cache-v1";
+const staticCache = "static-cache-v2";
 const assets = [
-    "https://poojajethva.github.io/bubblebash/",
-    "https://poojajethva.github.io/bubblebash/index.html",
-    "https://poojajethva.github.io/bubblebash/js/app.js",
-    "https://poojajethva.github.io/bubblebash/js/index.js",
-    "https://poojajethva.github.io/bubblebash/style.css",
-    "https://poojajethva.github.io/bubblebash/img/subject.png",
-    "https://poojajethva.github.io/bubblebash/img/bubble.png"
+    "/bubblebash/",
+    "/bubblebash/index.html",
+    "/bubblebash/js/app.js",
+    "/bubblebash/js/index.js",
+    "/bubblebash/style.css",
+    "/bubblebash/img/subject.png",
+    "/bubblebash/img/bubble.png"
 ];
 //install event
 self.addEventListener('install', (evt) => {

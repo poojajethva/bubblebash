@@ -4,30 +4,51 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="https://poojajethva.github.io/bubblebash/img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/bubblebash/img/favicon.ico" type="image/x-icon">
     <title>Bubble Bash</title>
-    <link rel="manifest" href="https://poojajethva.github.io/bubblebash/manifest.json">
-    <link rel="stylesheet" href="https://poojajethva.github.io/bubblebash/style.css">
+    <link rel="manifest" href="/bubblebash/manifest.json">
+    <link rel="stylesheet" href="/bubblebash/style.css">
     <!-- ios support -->
-    <link rel="apple-touch-icon" href="https://poojajethva.github.io/bubblebash/img/icons/icon-96x96.png">
+    <link rel="apple-touch-icon" href="/bubblebash/img/icons/icon-96x96.png">
     <meta name="apple-mobile-web-app-status-bar" content="#FFE1C4">
     <meta name="theme-color" content="#eee">
 </head>
 <body>
     <div class="mainWrapper">
-        <h1 class="title">Bubble<span>Bash</span></h1>
+        <div class="header">
+            <p class="score"><span>Score: </span><span class="scoreVal">---</span></p>
+            <h1 class="title">Bubble<span>Bash</span></h1>
+            <p class="howtoplay" id="howtoplay">How To Play?</p>
+        </div>
         
         <div id="gameZone" class="gameZone">
             <div id="player" class="player posAbso">
+            </div>
+            <div class="btnWrap">
+                <div class="btn upBtn" id="up"></div>
+                <div class="btn downBtn" id="down"></div>
             </div>
         </div>
 
         <div class="gameOver">
             <p class="gmTitle">Game Over</p>
+            <p class="gmScore">Score: <span class="scoreVal">---</span></p>
+            <p class="gmRetry" id="retry">Retry</p>
+        </div>
+
+        <div class="howtoplaySec">
+            <div class="content">
+                <p>Protect the fish from bubbles. Fish can only move up and down. Enjoy!!</p>
+                <p><b>Desktop:</b> Use <b>UP</b> and <b>DOWN</b> Arrow keys from your keyboard to move the fish up and down.</p>
+                <p><b>Mobile:</b> Use <b>UP</b> and <b>DOWN</b> Arrow buttons on the screen to move the fish up and down.</p>
+                <br><br>
+                <p class="small">Disclaimer: Images here are used from various sources from internet. This game is build only for learning purpose. No copyright is intended.</p>
+                <div class="close" id="close">Back</div>
+            </div>
         </div>
     </div>
     
-    <script src="https://poojajethva.github.io/bubblebash/js/app.js"></script>
-    <script src="https://poojajethva.github.io/bubblebash/js/index.js"></script>
+    <script src="/bubblebash/js/app.js"></script>
+    <script src="/bubblebash/js/index.js"></script>
 </body>
 </html>
