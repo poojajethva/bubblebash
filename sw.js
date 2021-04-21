@@ -1,12 +1,12 @@
-const staticCache = "static-cache-v2";
+const staticCache = "static-cache-v3";
 const assets = [
-    "/bubblebash/",
-    "/bubblebash/index.html",
-    "/bubblebash/js/app.js",
-    "/bubblebash/js/index.js",
-    "/bubblebash/style.css",
-    "/bubblebash/img/subject.png",
-    "/bubblebash/img/bubble.png"
+    "../bubblebash/",
+    "../bubblebash/index.html",
+    "../bubblebash/js/app.js",
+    "../bubblebash/js/index.js",
+    "../bubblebash/style.css",
+    "../bubblebash/img/subject.png",
+    "../bubblebash/img/bubble.png"
 ];
 //install event
 self.addEventListener('install', (evt) => {
