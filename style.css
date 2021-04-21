@@ -134,6 +134,11 @@ body{
     font-size: 12px;
 }
 
+.howtoplaySec h2{
+    padding-bottom: 30px;
+    font-weight: normal;
+}
+
 .gmTitle{
     font-size: 24px;
     text-transform: uppercase;
@@ -175,7 +180,7 @@ body{
     padding: 10px;
 }
 
-@media screen and (max-width: 850px){
+@media screen and (max-width: 800px){
     .player{
         width: 122px;
         height: 110px;
