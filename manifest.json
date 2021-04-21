@@ -43,8 +43,8 @@
           "sizes": "512x512"
         },
         {
-            "src": "../bubblebash/img/icons/maskable_icon.png",
-            "sizes": "196x196",
+            "src": "../bubblebash/img/icons/icon-96-96.png",
+            "sizes": "96x96",
             "type": "image/png",
             "purpose": "any maskable"
           }
