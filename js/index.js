@@ -1,146 +1,178 @@
-let subject = document.getElementById('player'),
-gameZone = document.getElementById('gameZone'),
-score = 0;
-
-function changePosition(code){
-    let gameZoneRect = gameZone.getBoundingClientRect(),
-    subjectRect = subject.getBoundingClientRect(),
-    subjectOffsetTop = subject.offsetTop,
-    gameZoneOffsetTop = gameZone.offsetTop;
-    
-    if (code == '38') {
-        // up arrow
-        if(subjectOffsetTop > gameZoneOffsetTop){
-            subject.style.top = (parseInt(subjectOffsetTop - 10)) + "px";
-        } 
-    }
-    else if (code == '40') {
-        // down arrow
-        if(subjectRect.bottom < gameZoneRect.bottom - 30 ){
-            subject.style.top = (parseInt(subjectOffsetTop + 10)) + "px";
+function bubbleBash(){
+    let eleObj = {
+        player : document.getElementById('player'),
+        gameZone : document.getElementById('gameZone'),
+        upKey: document.querySelector('#up'),
+        downKey: document.querySelector('#down'),
+        howToPlay: document.querySelector('#howtoplay'),
+        closeBtn: document.querySelector('#close'),
+        retryBtn: document.querySelector('#retry'),
+        howToPlaySec: document.querySelector('.howtoplaySec'),
+        gameOverSec: document.querySelector('.gameOver'),
+        scoreVal: document.querySelectorAll('.scoreVal'),
+        upKeyCode: 38,
+        downKeyCode: 40,
+        score: 0,
+        gameStatus: '',
+        maxObstaclesAtTime: 5,
+        collisionInterval: 10,
+        initialPlayerPosition: {
+            top: '30%'
         }
-    }
-}
+    };
 
-document.addEventListener('keydown', function(e){
-    changePosition(e.keyCode);
-});
-
-document.querySelector('#up').addEventListener('click', function(e){
-    changePosition(38);
-});
-
-document.querySelector('#down').addEventListener('click', function(e){
-    changePosition(40);
-});
-
-function createObstacles(){
-    let div = document.createElement("div"),
-    randomSize = between(50, 150),
-    randomPos = between(1,100);
-    div.classList.add("obstacle", "posAbso");
-    div.style.width = randomSize+"px";
-    div.style.height = randomSize+"px";
-    div.style.top = randomPos+"%";
-    
-    gameZone.appendChild(div);
-    score++;
-}
-
-function showScore(){
-    let scoreEle = document.querySelectorAll('.scoreVal').forEach(function(ele){
-        ele.innerText = score;
-    })
-}
-
-function resetScore(){
-    document.querySelectorAll('.scoreVal').forEach(function(ele){
-        ele.innerText = 0;
-    })
-    score = 0;
-}
-
-function deleteObstacles(){
-    let obstacleEles = document.querySelectorAll('.obstacle');
-    let randomChildIndex = between(0, obstacleEles.length-1);
-    obstacleEles[randomChildIndex].parentNode.removeChild(obstacleEles[randomChildIndex]);
-}
-
-function between(min, max) {  
-    return Math.floor(Math.random() * (max - min) + min)
-}
-
-createObstacles();
-
-(function loop() {
-    var rand = Math.round(Math.random() * (3000 - 500)) + 500;
-    let obsTimer = setTimeout(function() {
-        createObstacles();
-        if(document.querySelectorAll('.obstacle').length > 5)
-        deleteObstacles();
-        loop();  
-    }, rand);
-    return {
-        resetTimer: function(){
-            clearTimeout(obsTimer);
-        }
-    }
-}());
-
-function checkCollision() {
-    let subjectRect = subject.getBoundingClientRect(),
-    obstacleEles = document.querySelectorAll('.obstacle');
-    
-    for(let i = 0; i < obstacleEles.length; i++){
-        if((subjectRect.right >= obstacleEles[i].getBoundingClientRect().left &&
-        subjectRect.left <= obstacleEles[i].getBoundingClientRect().right) &&
-        (subjectRect.bottom >= obstacleEles[i].getBoundingClientRect().top &&
-        subjectRect.top <= obstacleEles[i].getBoundingClientRect().bottom)){
-            return true;
-        }
+    function changePosition(code){
+        let gameZoneRect = eleObj.gameZone.getBoundingClientRect(),
+        playerRect = eleObj.player.getBoundingClientRect(),
+        playerOffsetTop = eleObj.player.offsetTop,
+        gameZoneOffsetTop = eleObj.gameZone.offsetTop;
         
+        if (code == eleObj.upKeyCode) {
+            // up arrow
+            if(playerOffsetTop > gameZoneOffsetTop){
+                eleObj.player.style.top = (parseInt(playerOffsetTop - 10)) + "px";
+            } 
+        }
+        else if (code == eleObj.downKeyCode) {
+            // down arrow
+            if(playerRect.bottom < gameZoneRect.bottom - 30 ){
+                eleObj.player.style.top = (parseInt(playerOffsetTop + 10)) + "px";
+            }
+        }
     }
-    return false;
-}
 
-function gameOver(){
-    document.querySelector('.gameOver').style.display = "flex";
-    subject.style.display = "none";
-}
+    function createObstacles(){
+        let div = document.createElement("div"),
+        randomSize = between(50, 150),
+        randomPos = between(1,100);
+        div.classList.add("obstacle", "posAbso");
+        let divStyle = div.style;
+        divStyle.width = randomSize+"px";
+        divStyle.height = randomSize+"px";
+        divStyle.top = randomPos+"%";
+        
+        eleObj.gameZone.appendChild(div);
+        eleObj.score++;
+    }
 
-document.querySelector('#howtoplay').addEventListener('click', function(e){
-    document.querySelector('.howtoplaySec').style.display = "flex";
-});
+    function showScore(){
+        eleObj.scoreVal.forEach(function(ele){
+            ele.innerText = eleObj.score;
+        })
+    }
 
-document.querySelector('#close').addEventListener('click', function(e){
-    document.querySelector('.howtoplaySec').style.display = "none";
-});
+    function resetScore(){
+        eleObj.scoreVal.forEach(function(ele){
+            ele.innerText = 0;
+        })
+        eleObj.score = 0;
+    }
 
-document.querySelector('#retry').addEventListener('click', function(e){
-    document.querySelector('.gameOver').style.display = "none";
-    reset();
-});
+    function deleteObstacles(){
+        let obstacleEles = document.querySelectorAll('.obstacle'), 
+        randomChildIndex = between(0, obstacleEles.length-1);
+    obstacleEles[randomChildIndex].parentNode.removeChild(obstacleEles[randomChildIndex]);
+    }
+    
+    function between(min, max) {  
+        return Math.floor(Math.random() * (max - min) + min)
+    }
 
-function reset(){
-    subject.style.display = "block";
-    resetScore();
-    removeAllChildNodes();
-    gameStatus = setInterval(checkCollisionInterval, 10);
-}
-function removeAllChildNodes(parent) {
-    let obstacleEles = document.querySelectorAll('.obstacle');
-    for(let i=0; i<obstacleEles.length;i++){
-        obstacleEles[i].parentNode.removeChild(obstacleEles[i]);
+    function getObstaclesLoop() {
+        let rand = Math.round(Math.random() * (3000 - 500)) + 500,
+        obstacleEles = document.querySelectorAll('.obstacle');
+        setTimeout(function() {
+            createObstacles();
+            if(obstacleEles.length > eleObj.maxObstaclesAtTime)
+                deleteObstacles();
+            getObstaclesLoop();  
+        }, rand);
+    }
+
+    function checkCollision() {
+        let playerRect = player.getBoundingClientRect(),
+        obstacleEles = document.querySelectorAll('.obstacle');
+        
+        for(let i = 0; i < obstacleEles.length; i++){
+            let obstacleRectPos = obstacleEles[i].getBoundingClientRect();
+            if((playerRect.right >= obstacleRectPos.left &&
+            playerRect.left <= obstacleRectPos.right) &&
+            (playerRect.bottom >= obstacleRectPos.top &&
+            playerRect.top <= obstacleRectPos.bottom)){
+                return true;
+            }
+            
+        }
+        return false;
+    }
+
+    function gameOver(){
+        eleObj.gameOverSec.style.display = "flex";
+        eleObj.player.style.display = "none";
+    }
+
+    function reset(){
+        let playerStyle = eleObj.player.style;
+        playerStyle.display = "block";
+        playerStyle.top = eleObj.initialPlayerPosition.top;
+        resetScore();
+        removeAllObstaclesEle();
+        eleObj.gameStatus = setInterval(checkCollisionInterval, eleObj.collisionInterval);
+    }
+
+    function removeAllObstaclesEle() {
+        let obstacleEles = document.querySelectorAll('.obstacle');
+        for(let i=0; i<obstacleEles.length;i++){
+            obstacleEles[i].parentNode.removeChild(obstacleEles[i]);
+        }
+    }
+
+    function checkCollisionInterval(){
+        if(checkCollision()){
+            gameOver();
+            clearInterval(eleObj.gameStatus);
+        } else {
+            showScore();
+        }
+    }
+    
+    function eventListners(){
+        document.addEventListener('keydown', function(e){
+            changePosition(e.keyCode);
+        });
+        
+        eleObj.upKey.addEventListener('click', function(e){
+            changePosition(eleObj.upKeyCode);
+        });
+        
+        eleObj.downKey.addEventListener('click', function(e){
+            changePosition(eleObj.downKeyCode);
+        });
+        
+        eleObj.howToPlay.addEventListener('click', function(e){
+            eleObj.howToPlaySec.style.display = "flex";
+        });
+        
+        eleObj.closeBtn.addEventListener('click', function(e){
+            eleObj.howToPlaySec.style.display = "none";
+        });
+        
+        eleObj.retryBtn.addEventListener('click', function(e){
+            eleObj.gameOverSec.style.display = "none";
+            reset();
+        });
+    }
+
+    return{
+        init: function(){
+            createObstacles();
+            getObstaclesLoop();
+            eventListners();
+            eleObj.gameStatus = setInterval(checkCollisionInterval, eleObj.collisionInterval);
+        }
     }
 }
 
-let gameStatus = setInterval(checkCollisionInterval, 10);
-
-function checkCollisionInterval(){
-    if(checkCollision()){
-        gameOver();
-        clearInterval(gameStatus);
-    } else {
-        showScore();
-    }
-}
+document.addEventListener("DOMContentLoaded", function(event) { 
+    bubbleBash().init();
+});
