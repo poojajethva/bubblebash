@@ -115,7 +115,6 @@ function bubbleBash(){
 
     function reset(){
         let playerStyle = eleObj.player.style;
-        setHighestScore();
         playerStyle.display = "block";
         playerStyle.top = eleObj.initialPlayerPosition.top;
         resetScore();
@@ -124,13 +123,12 @@ function bubbleBash(){
     }
 
     function setHighestScore(){
-        let storeScore = localStorage.getItem('bubbleScore'),
-        liveScore = eleObj.score - 1;
+        let storeScore = localStorage.getItem('bubbleScore');
         if(!storeScore){
-            storeScore = liveScore;
+            storeScore = eleObj.score;
             storeScore = storeScore > 0 ? storeScore : 0;
-        } else if(liveScore > storeScore) {
-            storeScore = liveScore;
+        } else if(eleObj.score > storeScore) {
+            storeScore = eleObj.score;
         }
         localStorage.setItem('bubbleScore', storeScore);
         eleObj.highScoreVal.innerText = storeScore;
@@ -153,6 +151,7 @@ function bubbleBash(){
 
     function checkCollisionInterval(){
         if(checkCollision()){
+            setHighestScore();
             gameOver();
             clearInterval(eleObj.gameStatus);
         } else {
