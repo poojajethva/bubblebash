@@ -8,8 +8,6 @@ body{
 .mainWrapper{
     width: 100%;
     height: 100vh;
-    /* background-color: #2884b8; */
-    /* background-image: linear-gradient(315deg, #2884b8 0%, #d1bad2 74%); */
     overflow: hidden;
     background-color: #29539b;
     background-image: linear-gradient(315deg, #29539b 0%, #1e3b70 74%);
@@ -35,7 +33,7 @@ body{
     font-weight: bold;
     color: #fff; 
     text-align: center;  
-    text-shadow: 1px 1px 1px #000;
+    text-shadow: 2px 2px 1px #3f51b5;
 }
 .title span{
     font-style: italic;
@@ -113,6 +111,7 @@ body{
     align-items: center;
     justify-content: center;
     display: none;
+    z-index: 99;
 }
 .howtoplaySec .content{
     padding: 20px;
@@ -189,5 +188,9 @@ body{
     }
     .btnWrap{
         display: block;
+    }
+    .obstacle{
+        max-width: 100px;
+        max-height: 100px;
     }
 }

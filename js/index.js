@@ -10,12 +10,14 @@ function bubbleBash(){
         howToPlaySec: document.querySelector('.howtoplaySec'),
         gameOverSec: document.querySelector('.gameOver'),
         scoreVal: document.querySelectorAll('.scoreVal'),
+        highScoreVal: document.querySelector('.highScoreVal'),
         upKeyCode: 38,
         downKeyCode: 40,
         score: 0,
         gameStatus: '',
         maxObstaclesAtTime: 5,
         collisionInterval: 10,
+        movingSteps: 10,
         initialPlayerPosition: {
             top: '30%'
         }
@@ -29,21 +31,21 @@ function bubbleBash(){
         
         if (code == eleObj.upKeyCode) {
             // up arrow
-            if(playerOffsetTop > gameZoneOffsetTop){
-                eleObj.player.style.top = (parseInt(playerOffsetTop - 10)) + "px";
+            if(playerOffsetTop > gameZoneOffsetTop - 30){
+                eleObj.player.style.top = (parseInt(playerOffsetTop - eleObj.movingSteps)) + "px";
             } 
         }
         else if (code == eleObj.downKeyCode) {
             // down arrow
-            if(playerRect.bottom < gameZoneRect.bottom - 30 ){
-                eleObj.player.style.top = (parseInt(playerOffsetTop + 10)) + "px";
+            if(playerRect.bottom < gameZoneRect.bottom - 20 ){
+                eleObj.player.style.top = (parseInt(playerOffsetTop + eleObj.movingSteps)) + "px";
             }
         }
     }
 
     function createObstacles(){
         let div = document.createElement("div"),
-        randomSize = between(50, 150),
+        randomSize = between(20, 150),
         randomPos = between(1,100);
         div.classList.add("obstacle", "posAbso");
         let divStyle = div.style;
@@ -113,11 +115,24 @@ function bubbleBash(){
 
     function reset(){
         let playerStyle = eleObj.player.style;
+        setHighestScore();
         playerStyle.display = "block";
         playerStyle.top = eleObj.initialPlayerPosition.top;
         resetScore();
         removeAllObstaclesEle();
         eleObj.gameStatus = setInterval(checkCollisionInterval, eleObj.collisionInterval);
+    }
+
+    function setHighestScore(){
+        let storeScore = localStorage.getItem('bubbleScore');
+        if(!storeScore){
+            storeScore = eleObj.score;
+            localStorage.setItem('bubbleScore', eleObj.score);
+        } else if(eleObj.score > storeScore) {
+            storeScore = eleObj.score;
+            localStorage.setItem('bubbleScore', eleObj.score)
+        }
+        eleObj.highScoreVal.innerText = storeScore;
     }
 
     function removeAllObstaclesEle() {
@@ -167,6 +182,7 @@ function bubbleBash(){
         init: function(){
             createObstacles();
             getObstaclesLoop();
+            setHighestScore();
             eventListners();
             eleObj.gameStatus = setInterval(checkCollisionInterval, eleObj.collisionInterval);
         }
