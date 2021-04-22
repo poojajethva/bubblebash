@@ -15,6 +15,7 @@ function bubbleBash(){
         downKeyCode: 40,
         score: 0,
         gameStatus: '',
+        mouseInterval: '',
         maxObstaclesAtTime: 5,
         collisionInterval: 10,
         movingSteps: 10,
@@ -118,6 +119,7 @@ function bubbleBash(){
         let playerStyle = eleObj.player.style;
         playerStyle.display = "block";
         playerStyle.top = eleObj.initialPlayerPosition.top;
+        clearInterval(eleObj.mouseInterval);
         resetScore();
         removeAllObstaclesEle();
         eleObj.gameStatus = setInterval(checkCollisionInterval, eleObj.collisionInterval);
@@ -161,28 +163,27 @@ function bubbleBash(){
     }
     
     function eventListners(){
-        let mouseInterval;
         document.addEventListener('keydown', function(e){
             changePosition(e.keyCode);
         });
         eleObj.upKey.addEventListener('mousedown', function(e){
-            mouseInterval = setInterval(function(){
+            eleObj.mouseInterval = setInterval(function(){
                 changePosition(eleObj.upKeyCode)
             }, 50);
         });
         
         eleObj.upKey.addEventListener('mouseup', function(e){
-            clearInterval(mouseInterval);  
+            clearInterval(eleObj.mouseInterval);  
         });
         
         eleObj.downKey.addEventListener('mousedown', function(e){
-            mouseInterval = setInterval(function(){
+            eleObj.mouseInterval = setInterval(function(){
                 changePosition(eleObj.downKeyCode)
             }, 50);
         })
         
         eleObj.downKey.addEventListener('mouseup', function() {
-            clearInterval(mouseInterval);
+            clearInterval(eleObj.mouseInterval);
         });
         
         eleObj.howToPlay.addEventListener('click', function(e){
