@@ -194,3 +194,10 @@ body{
         max-height: 100px;
     }
 }
+
+@media screen and (max-height: 500px){
+    .obstacle{
+        max-width: 60px;
+        max-height: 60px;
+    }
+}

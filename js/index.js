@@ -93,14 +93,15 @@ function bubbleBash(){
 
     function checkCollision() {
         let playerRect = player.getBoundingClientRect(),
-        obstacleEles = document.querySelectorAll('.obstacle');
+        obstacleEles = document.querySelectorAll('.obstacle'),
+        extraPad = 10;
         
         for(let i = 0; i < obstacleEles.length; i++){
             let obstacleRectPos = obstacleEles[i].getBoundingClientRect();
-            if((playerRect.right >= obstacleRectPos.left &&
-            playerRect.left <= obstacleRectPos.right) &&
-            (playerRect.bottom >= obstacleRectPos.top &&
-            playerRect.top <= obstacleRectPos.bottom)){
+            if((playerRect.right >= obstacleRectPos.left + extraPad &&
+            playerRect.left + extraPad <= obstacleRectPos.right) &&
+            (playerRect.bottom >= obstacleRectPos.top + extraPad &&
+            playerRect.top + extraPad <= obstacleRectPos.bottom)){
                 return true;
             }
             
@@ -160,16 +161,28 @@ function bubbleBash(){
     }
     
     function eventListners(){
+        let mouseInterval;
         document.addEventListener('keydown', function(e){
             changePosition(e.keyCode);
         });
-        
-        eleObj.upKey.addEventListener('click', function(e){
-            changePosition(eleObj.upKeyCode);
+        eleObj.upKey.addEventListener('mousedown', function(e){
+            mouseInterval = setInterval(function(){
+                changePosition(eleObj.upKeyCode)
+            }, 50);
         });
         
-        eleObj.downKey.addEventListener('click', function(e){
-            changePosition(eleObj.downKeyCode);
+        eleObj.upKey.addEventListener('mouseup', function(e){
+            clearInterval(mouseInterval);  
+        });
+        
+        eleObj.downKey.addEventListener('mousedown', function(e){
+            mouseInterval = setInterval(function(){
+                changePosition(eleObj.downKeyCode)
+            }, 50);
+        })
+        
+        eleObj.downKey.addEventListener('mouseup', function() {
+            clearInterval(mouseInterval);
         });
         
         eleObj.howToPlay.addEventListener('click', function(e){
