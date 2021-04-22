@@ -31,7 +31,7 @@ function bubbleBash(){
         
         if (code == eleObj.upKeyCode) {
             // up arrow
-            if(playerOffsetTop > gameZoneOffsetTop - 30){
+            if(playerOffsetTop > gameZoneOffsetTop - 35){
                 eleObj.player.style.top = (parseInt(playerOffsetTop - eleObj.movingSteps)) + "px";
             } 
         }
@@ -124,13 +124,22 @@ function bubbleBash(){
     }
 
     function setHighestScore(){
+        let storeScore = localStorage.getItem('bubbleScore'),
+        liveScore = eleObj.score - 1;
+        if(!storeScore){
+            storeScore = liveScore;
+            storeScore = storeScore > 0 ? storeScore : 0;
+        } else if(liveScore > storeScore) {
+            storeScore = liveScore;
+        }
+        localStorage.setItem('bubbleScore', storeScore);
+        eleObj.highScoreVal.innerText = storeScore;
+    }
+
+    function setInitialHighestScore(){
         let storeScore = localStorage.getItem('bubbleScore');
         if(!storeScore){
-            storeScore = eleObj.score;
-            localStorage.setItem('bubbleScore', eleObj.score);
-        } else if(eleObj.score > storeScore) {
-            storeScore = eleObj.score;
-            localStorage.setItem('bubbleScore', eleObj.score)
+            storeScore = 0;
         }
         eleObj.highScoreVal.innerText = storeScore;
     }
@@ -182,7 +191,7 @@ function bubbleBash(){
         init: function(){
             createObstacles();
             getObstaclesLoop();
-            setHighestScore();
+            setInitialHighestScore();
             eventListners();
             eleObj.gameStatus = setInterval(checkCollisionInterval, eleObj.collisionInterval);
         }
