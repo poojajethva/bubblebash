@@ -161,30 +161,35 @@ function bubbleBash(){
             showScore();
         }
     }
+
+    function addListenerMulti(element, eventNames, listener) {
+        var events = eventNames.split(' ');
+        for (var i=0, iLen=events.length; i<iLen; i++) {
+          element.addEventListener(events[i], listener, false);
+        }
+      }
+      
+
+    let changePositionMouseAndTouchEvent = function (code){
+        eleObj.mouseInterval = setInterval(function(){
+            changePosition(code)
+        }, 50);
+    }
+
+    let clearIntervalTouchEvent = function(){
+            clearInterval(eleObj.mouseInterval);  
+    }
     
     function eventListners(){
         document.addEventListener('keydown', function(e){
             changePosition(e.keyCode);
         });
-        eleObj.upKey.addEventListener('mousedown', function(e){
-            eleObj.mouseInterval = setInterval(function(){
-                changePosition(eleObj.upKeyCode)
-            }, 50);
-        });
-        
-        eleObj.upKey.addEventListener('mouseup', function(e){
-            clearInterval(eleObj.mouseInterval);  
-        });
-        
-        eleObj.downKey.addEventListener('mousedown', function(e){
-            eleObj.mouseInterval = setInterval(function(){
-                changePosition(eleObj.downKeyCode)
-            }, 50);
-        })
-        
-        eleObj.downKey.addEventListener('mouseup', function() {
-            clearInterval(eleObj.mouseInterval);
-        });
+
+        addListenerMulti(eleObj.upKey, 'touchstart mousedown', () => changePositionMouseAndTouchEvent(eleObj.upKeyCode));
+        addListenerMulti(eleObj.upKey, 'touchend mouseup', clearIntervalTouchEvent);
+
+        addListenerMulti(eleObj.downKey, 'touchstart mousedown', ()=> changePositionMouseAndTouchEvent(eleObj.downKeyCode));
+        addListenerMulti(eleObj.downKey, 'touchend mouseup', clearIntervalTouchEvent);
         
         eleObj.howToPlay.addEventListener('click', function(e){
             eleObj.howToPlaySec.style.display = "flex";
