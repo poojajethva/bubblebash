@@ -19,7 +19,7 @@ function bubbleBash(){
         rightKeyCode: 39,
         score: 0,
         gameStatus: '',
-        mouseInterval: '',
+        mouseInterval: [0,0,0,0],
         maxObstaclesAtTime: 5,
         collisionInterval: 10,
         movingSteps: 10,
@@ -28,7 +28,7 @@ function bubbleBash(){
             left: '10px'
         }
     };
-
+    
     function changePosition(code){
         let gameZoneRect = eleObj.gameZone.getBoundingClientRect(),
         playerRect = eleObj.player.getBoundingClientRect(),
@@ -56,7 +56,7 @@ function bubbleBash(){
             }
         }
     }
-
+    
     function createObstacles(){
         let div = document.createElement("div"),
         randomSize = between(20, 150),
@@ -70,41 +70,41 @@ function bubbleBash(){
         eleObj.gameZone.appendChild(div);
         eleObj.score++;
     }
-
+    
     function showScore(){
         eleObj.scoreVal.forEach(function(ele){
             ele.innerText = eleObj.score;
         })
     }
-
+    
     function resetScore(){
         eleObj.scoreVal.forEach(function(ele){
             ele.innerText = 0;
         })
         eleObj.score = 0;
     }
-
+    
     function deleteObstacles(){
         let obstacleEles = document.querySelectorAll('.obstacle'), 
         randomChildIndex = between(0, obstacleEles.length-1);
-    obstacleEles[randomChildIndex].parentNode.removeChild(obstacleEles[randomChildIndex]);
+        obstacleEles[randomChildIndex].parentNode.removeChild(obstacleEles[randomChildIndex]);
     }
     
     function between(min, max) {  
         return Math.floor(Math.random() * (max - min) + min)
     }
-
+    
     function getObstaclesLoop() {
         let rand = Math.round(Math.random() * (3000 - 500)) + 500,
         obstacleEles = document.querySelectorAll('.obstacle');
         setTimeout(function() {
             createObstacles();
             if(obstacleEles.length > eleObj.maxObstaclesAtTime)
-                deleteObstacles();
+            deleteObstacles();
             getObstaclesLoop();  
         }, rand);
     }
-
+    
     function checkCollision() {
         let playerRect = player.getBoundingClientRect(),
         obstacleEles = document.querySelectorAll('.obstacle'),
@@ -112,33 +112,30 @@ function bubbleBash(){
         
         for(let i = 0; i < obstacleEles.length; i++){
             let obstacleRectPos = obstacleEles[i].getBoundingClientRect();
-            if((playerRect.right >= obstacleRectPos.left + extraPad &&
-            playerRect.left + extraPad <= obstacleRectPos.right) &&
-            (playerRect.bottom >= obstacleRectPos.top + extraPad &&
-            playerRect.top + extraPad <= obstacleRectPos.bottom)){
+            if((playerRect.right >= obstacleRectPos.left + extraPad && playerRect.left + extraPad <= obstacleRectPos.right) && (playerRect.bottom >= obstacleRectPos.top + extraPad && playerRect.top + extraPad <= obstacleRectPos.bottom)){
                 return true;
             }
             
         }
         return false;
     }
-
+    
     function gameOver(){
         eleObj.gameOverSec.style.display = "flex";
         eleObj.player.style.display = "none";
     }
-
+    
     function reset(){
         let playerStyle = eleObj.player.style;
         playerStyle.display = "block";
         playerStyle.top = eleObj.initialPlayerPosition.top;
         playerStyle.left = eleObj.initialPlayerPosition.left;
-        clearInterval(eleObj.mouseInterval);
+        clearAllMouseInterval();
         resetScore();
         removeAllObstaclesEle();
         eleObj.gameStatus = setInterval(checkCollisionInterval, eleObj.collisionInterval);
     }
-
+    
     function setHighestScore(){
         let storeScore = localStorage.getItem('bubbleScore');
         if(!storeScore){
@@ -150,7 +147,7 @@ function bubbleBash(){
         localStorage.setItem('bubbleScore', storeScore);
         eleObj.highScoreVal.innerText = storeScore;
     }
-
+    
     function setInitialHighestScore(){
         let storeScore = localStorage.getItem('bubbleScore');
         if(!storeScore){
@@ -158,14 +155,14 @@ function bubbleBash(){
         }
         eleObj.highScoreVal.innerText = storeScore;
     }
-
+    
     function removeAllObstaclesEle() {
         let obstacleEles = document.querySelectorAll('.obstacle');
         for(let i=0; i<obstacleEles.length;i++){
             obstacleEles[i].parentNode.removeChild(obstacleEles[i]);
         }
     }
-
+    
     function checkCollisionInterval(){
         if(checkCollision()){
             setHighestScore();
@@ -175,41 +172,45 @@ function bubbleBash(){
             showScore();
         }
     }
-
+    
     function addListenerMulti(element, eventNames, listener) {
         var events = eventNames.split(' ');
         for (var i=0, iLen=events.length; i<iLen; i++) {
-          element.addEventListener(events[i], listener, false);
+            element.addEventListener(events[i], listener, false);
         }
-      }
-      
-
-    let changePositionMouseAndTouchEvent = function (code){
-        eleObj.mouseInterval = setInterval(function(){
+    }
+    
+    function clearAllMouseInterval(){
+        for(let i=0;i<eleObj.mouseInterval.length;i++)
+        clearIntervalTouchEvent(i);
+    }
+    
+    let changePositionMouseAndTouchEvent = function (code, interValNo){
+        eleObj.mouseInterval[interValNo] = setInterval(function(){
             changePosition(code)
         }, 50);
     }
-
-    let clearIntervalTouchEvent = function(){
-            clearInterval(eleObj.mouseInterval);  
+    
+    let clearIntervalTouchEvent = function(interValNo){
+        clearInterval(eleObj.mouseInterval[interValNo]);  
     }
     
     function eventListners(){
         document.addEventListener('keydown', function(e){
             changePosition(e.keyCode);
         });
-
-        addListenerMulti(eleObj.upKey, 'touchstart mousedown', () => changePositionMouseAndTouchEvent(eleObj.upKeyCode));
-        addListenerMulti(eleObj.upKey, 'touchend mouseup', clearIntervalTouchEvent);
-
-        addListenerMulti(eleObj.downKey, 'touchstart mousedown', ()=> changePositionMouseAndTouchEvent(eleObj.downKeyCode));
-        addListenerMulti(eleObj.downKey, 'touchend mouseup', clearIntervalTouchEvent);
-
-        addListenerMulti(eleObj.rightKey, 'touchstart mousedown', ()=> changePositionMouseAndTouchEvent(eleObj.rightKeyCode));
-        addListenerMulti(eleObj.rightKey, 'touchend mouseup', clearIntervalTouchEvent);
-
-        addListenerMulti(eleObj.leftKey, 'touchstart mousedown', ()=> changePositionMouseAndTouchEvent(eleObj.leftKeyCode));
-        addListenerMulti(eleObj.leftKey, 'touchend mouseup', clearIntervalTouchEvent);
+        
+        addListenerMulti(eleObj.upKey, 'touchstart mousedown', () => changePositionMouseAndTouchEvent(eleObj.upKeyCode, 0));
+        addListenerMulti(eleObj.upKey, 'touchend mouseup', () => clearIntervalTouchEvent[0]);
+        
+        addListenerMulti(eleObj.downKey, 'touchstart mousedown', ()=> changePositionMouseAndTouchEvent(eleObj.downKeyCode, 1));
+        addListenerMulti(eleObj.downKey, 'touchend mouseup', () => clearIntervalTouchEvent[1]);
+        
+        addListenerMulti(eleObj.rightKey, 'touchstart mousedown', ()=> changePositionMouseAndTouchEvent(eleObj.rightKeyCode), 2);
+        addListenerMulti(eleObj.rightKey, 'touchend mouseup', () => clearIntervalTouchEvent[2]);
+        
+        addListenerMulti(eleObj.leftKey, 'touchstart mousedown', ()=> changePositionMouseAndTouchEvent(eleObj.leftKeyCode, 3));
+        addListenerMulti(eleObj.leftKey, 'touchend mouseup', () => clearIntervalTouchEvent[3]);
         
         eleObj.howToPlay.addEventListener('click', function(e){
             eleObj.howToPlaySec.style.display = "flex";
@@ -224,7 +225,7 @@ function bubbleBash(){
             reset();
         });
     }
-
+    
     return{
         init: function(){
             createObstacles();
