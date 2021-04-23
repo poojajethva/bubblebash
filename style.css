@@ -147,23 +147,29 @@ body{
 
 .btnWrap{
     position: absolute;
-    bottom: 30px;
-    right: 50px;
+    bottom: 10%;
     z-index: 99;
     display: none;
+}
+.btnUpDown{
+    right: 50px;
+}
+.btnLeftRight{
+    left: 50px;
 }
 .btn{
     width: 0;
     height: 0;
     border-style: solid;
-    border-width: 0 50px 50px 50px;
-    border-color: transparent transparent #ffffff transparent;
+    border-width: 0 30px 30px 30px;
+    border-color: transparent transparent rgba(0,0,0,0.5) transparent;
     cursor: pointer;
+    -webkit-tap-highlight-color:  transparent;
 }
 
 .downBtn{
-    border-width: 50px 50px 0 50px;
-    border-color: #ffffff transparent transparent transparent;
+    border-width: 30px 30px 0 30px;
+    border-color: rgba(0,0,0,0.5) transparent transparent transparent;
     margin-top: 10px;
 }
 
@@ -172,15 +178,15 @@ body{
 }
 
 .rightBtn{
-    border-width: 50px 0 50px 50px;
-    border-color: transparent transparent transparent #fff;
+    border-width: 30px 0 30px 30px;
+    border-color: transparent transparent transparent rgba(0,0,0,0.5);
     display: inline-block;
     margin: 10px 0 0 10px;
 }
 
 .leftBtn{
-    border-width: 50px 50px 50px 0;
-    border-color: transparent #fff transparent transparent;
+    border-width: 30px 30px 30px 0;
+    border-color: transparent rgba(0,0,0,0.5) transparent transparent;
     display: inline-block;
     margin: 10px 0 0 0;
 }
@@ -215,7 +221,11 @@ body{
 
 @media screen and (max-height: 500px){
     .obstacle{
-        max-width: 60px;
-        max-height: 60px;
+        max-width: 50px;
+        max-height: 50px;
+    }
+    .player {
+        width: 100px;
+        height: 90px;
     }
 }
