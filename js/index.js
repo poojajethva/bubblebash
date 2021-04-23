@@ -19,7 +19,7 @@ function bubbleBash(){
         rightKeyCode: 39,
         score: 0,
         gameStatus: '',
-        mouseInterval: [0,0,0,0],
+        mouseInterval: ['','','',''],
         maxObstaclesAtTime: 5,
         collisionInterval: 10,
         movingSteps: 10,
