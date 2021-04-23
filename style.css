@@ -53,7 +53,7 @@ body{
     background-size: cover;
     width: 178px;
     height: 160px;
-    left: 100px;
+    left: 10px;
     top: 30%;
     animation: littleMovement 1s ease infinite;
 }
@@ -147,7 +147,7 @@ body{
 
 .btnWrap{
     position: absolute;
-    bottom: 14%;
+    bottom: 30px;
     right: 50px;
     z-index: 99;
     display: none;
@@ -165,6 +165,24 @@ body{
     border-width: 50px 50px 0 50px;
     border-color: #ffffff transparent transparent transparent;
     margin-top: 10px;
+}
+
+.upBtn, .downBtn{
+    margin-left: 10px;
+}
+
+.rightBtn{
+    border-width: 50px 0 50px 50px;
+    border-color: transparent transparent transparent #fff;
+    display: inline-block;
+    margin: 10px 0 0 10px;
+}
+
+.leftBtn{
+    border-width: 50px 50px 50px 0;
+    border-color: transparent #fff transparent transparent;
+    display: inline-block;
+    margin: 10px 0 0 0;
 }
 
 .gmRetry{

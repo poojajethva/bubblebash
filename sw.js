@@ -1,4 +1,4 @@
-const staticCache = "static-cache-v16";
+const staticCache = "static-cache-v17";
 const assets = [
     "../bubblebash/",
     "../bubblebash/index.html",

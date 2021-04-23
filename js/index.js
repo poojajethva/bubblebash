@@ -4,6 +4,8 @@ function bubbleBash(){
         gameZone : document.getElementById('gameZone'),
         upKey: document.querySelector('#up'),
         downKey: document.querySelector('#down'),
+        rightKey: document.querySelector('#right'),
+        leftKey: document.querySelector('#left'),
         howToPlay: document.querySelector('#howtoplay'),
         closeBtn: document.querySelector('#close'),
         retryBtn: document.querySelector('#retry'),
@@ -13,6 +15,8 @@ function bubbleBash(){
         highScoreVal: document.querySelector('.highScoreVal'),
         upKeyCode: 38,
         downKeyCode: 40,
+        leftKeyCode: 37,
+        rightKeyCode: 39,
         score: 0,
         gameStatus: '',
         mouseInterval: '',
@@ -20,7 +24,8 @@ function bubbleBash(){
         collisionInterval: 10,
         movingSteps: 10,
         initialPlayerPosition: {
-            top: '30%'
+            top: '30%',
+            left: '10px'
         }
     };
 
@@ -31,15 +36,23 @@ function bubbleBash(){
         gameZoneOffsetTop = eleObj.gameZone.offsetTop;
         
         if (code == eleObj.upKeyCode) {
-            // up arrow
             if(playerOffsetTop > gameZoneOffsetTop - 35){
                 eleObj.player.style.top = (parseInt(playerOffsetTop - eleObj.movingSteps)) + "px";
             } 
         }
         else if (code == eleObj.downKeyCode) {
-            // down arrow
             if(playerRect.bottom < gameZoneRect.bottom - 20 ){
                 eleObj.player.style.top = (parseInt(playerOffsetTop + eleObj.movingSteps)) + "px";
+            }
+        }
+        else if (code == eleObj.rightKeyCode) {
+            if(playerRect.right < gameZoneRect.right - 20){
+                eleObj.player.style.left = (parseInt(playerRect.left + eleObj.movingSteps)) + "px";
+            }
+        }
+        else if (code == eleObj.leftKeyCode) {
+            if(playerRect.left > gameZoneRect.left + 20 ){
+                eleObj.player.style.left = (parseInt(playerRect.left - eleObj.movingSteps)) + "px";
             }
         }
     }
@@ -119,6 +132,7 @@ function bubbleBash(){
         let playerStyle = eleObj.player.style;
         playerStyle.display = "block";
         playerStyle.top = eleObj.initialPlayerPosition.top;
+        playerStyle.left = eleObj.initialPlayerPosition.left;
         clearInterval(eleObj.mouseInterval);
         resetScore();
         removeAllObstaclesEle();
@@ -190,6 +204,12 @@ function bubbleBash(){
 
         addListenerMulti(eleObj.downKey, 'touchstart mousedown', ()=> changePositionMouseAndTouchEvent(eleObj.downKeyCode));
         addListenerMulti(eleObj.downKey, 'touchend mouseup', clearIntervalTouchEvent);
+
+        addListenerMulti(eleObj.rightKey, 'touchstart mousedown', ()=> changePositionMouseAndTouchEvent(eleObj.rightKeyCode));
+        addListenerMulti(eleObj.rightKey, 'touchend mouseup', clearIntervalTouchEvent);
+
+        addListenerMulti(eleObj.leftKey, 'touchstart mousedown', ()=> changePositionMouseAndTouchEvent(eleObj.leftKeyCode));
+        addListenerMulti(eleObj.leftKey, 'touchend mouseup', clearIntervalTouchEvent);
         
         eleObj.howToPlay.addEventListener('click', function(e){
             eleObj.howToPlaySec.style.display = "flex";
