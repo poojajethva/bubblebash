@@ -2,10 +2,25 @@ function bubbleBash(){
     let eleObj = {
         player : document.getElementById('player'),
         gameZone : document.getElementById('gameZone'),
-        upKey: document.querySelector('#up'),
-        downKey: document.querySelector('#down'),
-        rightKey: document.querySelector('#right'),
-        leftKey: document.querySelector('#left'),
+        directions: {
+            up: {
+                ele: document.querySelector('#up'),
+                keyCode: 38,
+            },
+            down: {
+                ele: document.querySelector('#down'),
+                keyCode: 40,
+            },
+            right: {
+                ele: document.querySelector('#right'),
+                keyCode: 39,
+            },
+            left: {
+                ele: document.querySelector('#left'),
+                keyCode: 37,
+            }
+        },
+        mouseInterval: '',
         howToPlay: document.querySelector('#howtoplay'),
         closeBtn: document.querySelector('#close'),
         retryBtn: document.querySelector('#retry'),
@@ -13,13 +28,8 @@ function bubbleBash(){
         gameOverSec: document.querySelector('.gameOver'),
         scoreVal: document.querySelectorAll('.scoreVal'),
         highScoreVal: document.querySelector('.highScoreVal'),
-        upKeyCode: 38,
-        downKeyCode: 40,
-        leftKeyCode: 37,
-        rightKeyCode: 39,
         score: 0,
         gameStatus: '',
-        mouseInterval: ['','','',''],
         maxObstaclesAtTime: 5,
         collisionInterval: 10,
         movingSteps: 10,
@@ -33,28 +43,37 @@ function bubbleBash(){
         let gameZoneRect = eleObj.gameZone.getBoundingClientRect(),
         playerRect = eleObj.player.getBoundingClientRect(),
         playerOffsetTop = eleObj.player.offsetTop,
-        gameZoneOffsetTop = eleObj.gameZone.offsetTop;
-        
-        if (code == eleObj.upKeyCode) {
-            if(playerOffsetTop > gameZoneOffsetTop - 35){
-                eleObj.player.style.top = (parseInt(playerOffsetTop - eleObj.movingSteps)) + "px";
-            } 
-        }
-        else if (code == eleObj.downKeyCode) {
-            if(playerRect.bottom < gameZoneRect.bottom - 20 ){
-                eleObj.player.style.top = (parseInt(playerOffsetTop + eleObj.movingSteps)) + "px";
+        gameZoneOffsetTop = eleObj.gameZone.offsetTop,
+        obj = eleObj.directions;
+        switch(code){
+            case obj.up.keyCode: {
+                if(playerOffsetTop > gameZoneOffsetTop - 35){
+                    eleObj.player.style.top = (parseInt(playerOffsetTop - eleObj.movingSteps)) + "px";
+                } 
+                break;
+            };
+            case obj.down.keyCode: {
+                if(playerRect.bottom < gameZoneRect.bottom - 20 ){
+                    eleObj.player.style.top = (parseInt(playerOffsetTop + eleObj.movingSteps)) + "px";
+                }
+                break;
+            };
+            case obj.right.keyCode: {
+                if(playerRect.right < gameZoneRect.right - 20){
+                    eleObj.player.style.left = (parseInt(playerRect.left + eleObj.movingSteps)) + "px";
+                }
+                break;
+            };
+            case obj.left.keyCode: {
+                if(playerRect.left > gameZoneRect.left + 20 ){
+                    eleObj.player.style.left = (parseInt(playerRect.left - eleObj.movingSteps)) + "px";
+                }
+                break;
+            }; 
+            default: {
+                return;
             }
-        }
-        else if (code == eleObj.rightKeyCode) {
-            if(playerRect.right < gameZoneRect.right - 20){
-                eleObj.player.style.left = (parseInt(playerRect.left + eleObj.movingSteps)) + "px";
-            }
-        }
-        else if (code == eleObj.leftKeyCode) {
-            if(playerRect.left > gameZoneRect.left + 20 ){
-                eleObj.player.style.left = (parseInt(playerRect.left - eleObj.movingSteps)) + "px";
-            }
-        }
+        }   
     }
     
     function createObstacles(){
@@ -130,7 +149,7 @@ function bubbleBash(){
         playerStyle.display = "block";
         playerStyle.top = eleObj.initialPlayerPosition.top;
         playerStyle.left = eleObj.initialPlayerPosition.left;
-        clearAllMouseInterval();
+        clearIntervalTouchEvent();
         resetScore();
         removeAllObstaclesEle();
         eleObj.gameStatus = setInterval(checkCollisionInterval, eleObj.collisionInterval);
@@ -180,19 +199,28 @@ function bubbleBash(){
         }
     }
     
-    function clearAllMouseInterval(){
-        for(let i=0;i<eleObj.mouseInterval.length;i++)
-        clearIntervalTouchEvent(i);
-    }
-    
-    let changePositionMouseAndTouchEvent = function (code, interValNo){
-        eleObj.mouseInterval[interValNo] = setInterval(function(){
-            changePosition(code)
+    function changePositionMouseAndTouchEvent(code){
+        clearIntervalTouchEvent();
+        eleObj.mouseInterval = setInterval(function(){
+            changePosition(code);
         }, 50);
     }
+
+    function leftRightBtnsListner(){
+        let dirOb = eleObj.directions;
+        for (key in dirOb) {
+            let data = dirOb[key];
+            addListenerMulti(data.ele, 'touchstart mousedown', function(){
+                changePositionMouseAndTouchEvent(data.keyCode);
+            });
+            addListenerMulti(data.ele, 'touchend mouseup', function(){
+                clearIntervalTouchEvent();
+            });
+        }
+    }
     
-    let clearIntervalTouchEvent = function(interValNo){
-        clearInterval(eleObj.mouseInterval[interValNo]);  
+    function clearIntervalTouchEvent(){
+        clearInterval(eleObj.mouseInterval);  
     }
     
     function eventListners(){
@@ -200,17 +228,7 @@ function bubbleBash(){
             changePosition(e.keyCode);
         });
         
-        addListenerMulti(eleObj.upKey, 'touchstart mousedown', () => changePositionMouseAndTouchEvent(eleObj.upKeyCode, 0));
-        addListenerMulti(eleObj.upKey, 'touchend mouseup', () => clearIntervalTouchEvent(0));
-        
-        addListenerMulti(eleObj.downKey, 'touchstart mousedown', ()=> changePositionMouseAndTouchEvent(eleObj.downKeyCode, 1));
-        addListenerMulti(eleObj.downKey, 'touchend mouseup', () => clearIntervalTouchEvent(1));
-        
-        addListenerMulti(eleObj.rightKey, 'touchstart mousedown', ()=> changePositionMouseAndTouchEvent(eleObj.rightKeyCode), 2);
-        addListenerMulti(eleObj.rightKey, 'touchend mouseup', () => clearIntervalTouchEvent(2));
-        
-        addListenerMulti(eleObj.leftKey, 'touchstart mousedown', ()=> changePositionMouseAndTouchEvent(eleObj.leftKeyCode, 3));
-        addListenerMulti(eleObj.leftKey, 'touchend mouseup', () => clearIntervalTouchEvent(3));
+        leftRightBtnsListner();
         
         eleObj.howToPlay.addEventListener('click', function(e){
             eleObj.howToPlaySec.style.display = "flex";
