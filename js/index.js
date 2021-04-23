@@ -201,16 +201,16 @@ function bubbleBash(){
         });
         
         addListenerMulti(eleObj.upKey, 'touchstart mousedown', () => changePositionMouseAndTouchEvent(eleObj.upKeyCode, 0));
-        addListenerMulti(eleObj.upKey, 'touchend mouseup', () => clearIntervalTouchEvent[0]);
+        addListenerMulti(eleObj.upKey, 'touchend mouseup', () => clearIntervalTouchEvent(0));
         
         addListenerMulti(eleObj.downKey, 'touchstart mousedown', ()=> changePositionMouseAndTouchEvent(eleObj.downKeyCode, 1));
-        addListenerMulti(eleObj.downKey, 'touchend mouseup', () => clearIntervalTouchEvent[1]);
+        addListenerMulti(eleObj.downKey, 'touchend mouseup', () => clearIntervalTouchEvent(1));
         
         addListenerMulti(eleObj.rightKey, 'touchstart mousedown', ()=> changePositionMouseAndTouchEvent(eleObj.rightKeyCode), 2);
-        addListenerMulti(eleObj.rightKey, 'touchend mouseup', () => clearIntervalTouchEvent[2]);
+        addListenerMulti(eleObj.rightKey, 'touchend mouseup', () => clearIntervalTouchEvent(2));
         
         addListenerMulti(eleObj.leftKey, 'touchstart mousedown', ()=> changePositionMouseAndTouchEvent(eleObj.leftKeyCode, 3));
-        addListenerMulti(eleObj.leftKey, 'touchend mouseup', () => clearIntervalTouchEvent[3]);
+        addListenerMulti(eleObj.leftKey, 'touchend mouseup', () => clearIntervalTouchEvent(3));
         
         eleObj.howToPlay.addEventListener('click', function(e){
             eleObj.howToPlaySec.style.display = "flex";
